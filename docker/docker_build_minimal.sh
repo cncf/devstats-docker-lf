@@ -14,5 +14,5 @@ cd "$cwd" || exit 4
 rm -f devstats-docer-lf.tar 2>/dev/null
 tar cf devstats-docker-lf.tar docker
 
-docker build -f ./docker/Dockerfile -t devstats-lfda .
+docker build -f ./docker/Dockerfile.minimal -t devstats-minimal-lfda .
 rm -f devstats.tar devstatscode.tar devstats-docker-lf.tar

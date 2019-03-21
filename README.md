@@ -50,11 +50,6 @@ DevStats deployment using docker and managed AuroraDB and ElasticSearch
 - Use `` GHA2DB_GITHUB_OAUTH="`cat /etc/github/oauths`" PG_PASS=... ./docker/docker_devstats.sh `` to do devstats sync. This should be run hourly, ideally when new GHA files are available which is about every hour:08.
 
 
-# Minimal devstats image
-
-- If you only want to deploy from host, you can use `Dockerfile.minimal` and `Makefile.minimal` to build minimal devstats image. It will skip all tools needed to bootstrap database and deploy projects.
-
-
 # DockerHub
 
 - Devstats image can be pulled from the [docker hub](https://hub.docker.com/r/lukaszgryglicki/devstats-lfda/).
@@ -62,8 +57,8 @@ DevStats deployment using docker and managed AuroraDB and ElasticSearch
 
 # One command test all
 
-- Use `PASS=... ./docker/docker_test_all.sh` to test full deployment from either the host or the container. It will try to use `/etc/github/oauths` or `/etc/github/oauth` as a GitHub OAuth token (if file is present, otherwise it will use public mode - very restricted).
-- Or specify GitHub OAuth token manually `GHA2DB_GITHUB_OAUTH=... PASS=... ./docker/docker_test_all.sh` to test full deployment from either the host or the container.
+- Use `PASS=... ./docker/docker_test_all.sh` to test full deployment from the container. It will try to use `/etc/github/oauths` or `/etc/github/oauth` as a GitHub OAuth token (if file is present, otherwise it will use public mode - very restricted).
+- Or specify GitHub OAuth token manually `GHA2DB_GITHUB_OAUTH=... PASS=... ./docker/docker_test_all.sh` to test full deployment from the container.
 - Final command on a fresh system should be `clear; GHA2DB_GITHUB_OAUTH=key PASS=test ./docker/docker_test_all.sh`.
 - To use aurora postgres database `clear; GHA2DB_GITHUB_OAUTH=key PASS=test AURORA=1 ./docker/docker_test_all.sh`.
 
