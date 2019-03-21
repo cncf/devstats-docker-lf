@@ -37,4 +37,4 @@ then
   echo 'type:text AND full_body:\"kubernetes bug\"'
   exit 3
 fi
-docker run --network=lfda_default devstats curl -XPOST -H 'Content-Type: application/json' "${ES_URL}/${1}/${2}/_search?pretty" -d "{\"query\":{\"query_string\":{\"query\":\"${3}\"}}}"
+docker run --network=lfda_default devstats-lfda curl -XPOST -H 'Content-Type: application/json' "${ES_URL}/${1}/${2}/_search?pretty" -d "{\"query\":{\"query_string\":{\"query\":\"${3}\"}}}"

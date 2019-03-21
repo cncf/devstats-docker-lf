@@ -1,2 +1,2 @@
 #!/bin/bash
-docker image rm -f devstats
+docker image rm -f devstats-lfda

@@ -20,7 +20,7 @@ then
   ./docker/docker_remove.sh
 fi
 ./docker/docker_build.sh || exit 3
-#export ES_HOST=`docker run devstats ip route show 2>/dev/null | awk '/default/ {print $3}'`
+#export ES_HOST=`docker run devstats-lfda ip route show 2>/dev/null | awk '/default/ {print $3}'`
 export ES_HOST=elasticsearch
 export ES_PORT=9200
 export ES_URL="http://${ES_HOST}:${ES_PORT}"

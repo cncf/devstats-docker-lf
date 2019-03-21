@@ -5,4 +5,4 @@ then
   exit 1
 fi
 # devstats here is a log database name
-./devel/db.sh psql -h 172.17.0.1 -p 65432 devstats
+./devel/db.sh psql -h 172.17.0.1 -p 65432 devstats-lfda

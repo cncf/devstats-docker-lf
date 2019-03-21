@@ -13,4 +13,4 @@ then
   echo "$0: please provide type name as a second argument"
   exit 2
 fi
-docker run --network=lfda_default devstats curl -XGET "${ES_URL}/${1}/${2}/_search?pretty"
+docker run --network=lfda_default devstats-lfda curl -XGET "${ES_URL}/${1}/${2}/_search?pretty"
