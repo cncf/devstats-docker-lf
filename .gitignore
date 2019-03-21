@@ -51,6 +51,8 @@ drop.sql
 sqlite/*.sql
 /*.csv
 /devstats.tar
+/devstatscode.tar
+/devstats-docker-lf.tar
 /csv/*.csv
 /report_6months.txt
 /report_alltime.txt
