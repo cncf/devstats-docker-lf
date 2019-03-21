@@ -13,20 +13,11 @@ then
     echo ''
   fi
 fi
-if [ "${DEPLOY_FROM}" = "container" ]
+
+if [ -z "$AURORA" ]
 then
-  if [ -z "$AURORA" ]
-  then
-    host=`docker run devstats-lfda ip route show | awk '/default/ {print $3}'`
-    docker run -e GHA2DB_SKIPTIME=1 -e GHA2DB_SKIPLOG=1 -e PG_PORT=65432 -e PG_HOST="${host}" -e PG_PASS="${PG_PASS}" -e PG_DB=devstats --env-file <(env | grep GHA2DB) devstats-lfda runq util_sql/recent_log.sql '{{lim}}' 10
-  else
-    docker run -e GHA2DB_SKIPTIME=1 -e GHA2DB_SKIPLOG=1 -e PG_PORT=5432 -e PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" -e PG_PASS="${PG_PASS}" -e PG_DB=devstats --env-file <(env | grep GHA2DB) devstats-lfda runq util_sql/recent_log.sql '{{lim}}' 10
-  fi
+  host=`docker run devstats-lfda ip route show | awk '/default/ {print $3}'`
+  docker run -e GHA2DB_SKIPTIME=1 -e GHA2DB_SKIPLOG=1 -e PG_PORT=65432 -e PG_HOST="${host}" -e PG_PASS="${PG_PASS}" -e PG_DB=devstats --env-file <(env | grep GHA2DB) devstats-lfda runq util_sql/recent_log.sql '{{lim}}' 10
 else
-  if [ -z "$AURORA" ]
-  then
-    GHA2DB_SKIPTIME=1 GHA2DB_SKIPLOG=1 PG_PORT=65432 PG_DB=devstats runq util_sql/recent_log.sql '{{lim}}' 10
-  else
-    GHA2DB_SKIPTIME=1 GHA2DB_SKIPLOG=1 PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" PG_DB=devstats runq util_sql/recent_log.sql '{{lim}}' 10
-  fi
+  docker run -e GHA2DB_SKIPTIME=1 -e GHA2DB_SKIPLOG=1 -e PG_PORT=5432 -e PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" -e PG_PASS="${PG_PASS}" -e PG_DB=devstats --env-file <(env | grep GHA2DB) devstats-lfda runq util_sql/recent_log.sql '{{lim}}' 10
 fi

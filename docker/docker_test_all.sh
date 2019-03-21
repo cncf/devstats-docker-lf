@@ -7,17 +7,6 @@ then
   exit 1
 fi
 
-if [ "${DEPLOY_FROM}" = "host" ]
-then
-  echo "Testing deployment from the host"
-elif [ "${DEPLOY_FROM}" = "container" ]
-then
-  echo "Testing deployment from the container"
-else
-  echo "$0: set the deployment type via DEPLOY_FROM=host or DEPLOY_FROM=container"
-  exit 2
-fi
-
 if [ -z "${GHA2DB_GITHUB_OAUTH}" ]
 then
   GITHUB_OAUTH_FILE="/etc/github/oauths"
@@ -45,10 +34,7 @@ fi
 ./cron/sysctl_config.sh
 if [ -z "${RESTART}" ]
 then
-  if [ "${DEPLOY_FROM}" = "container" ]
-  then
-    ./docker/docker_remove.sh
-  fi
+  ./docker/docker_remove.sh
   ./docker/docker_remove_es.sh
   if [ -z "$AURORA" ]
   then
@@ -60,22 +46,10 @@ then
     PG_PASS="${PASS}" ./docker/docker_psql.sh || exit 4
   fi
 fi
-if [ "${DEPLOY_FROM}" = "container" ]
-then
-  ./docker/docker_build.sh || exit 5
-else
-  make || exit 15
-  make install || exit 16
-fi
+./docker/docker_build.sh || exit 5
 ./docker/docker_es_wait.sh
 PG_PASS="${PASS}" ./docker/docker_psql_wait.sh
-if [ "${DEPLOY_FROM}" = "host" ]
-then
-  PG_PASS="${PASS}" PG_PASS_RO="${PASS}" PG_PASS_TEAM="${PASS}" ./docker/docker_deploy_from_host.sh || exit 6
-elif [ "${DEPLOY_FROM}" = "container" ]
-then
-  PG_PASS="${PASS}" PG_PASS_RO="${PASS}" PG_PASS_TEAM="${PASS}" ./docker/docker_deploy_from_container.sh || exit 7
-fi
+PG_PASS="${PASS}" PG_PASS_RO="${PASS}" PG_PASS_TEAM="${PASS}" ./docker/docker_deploy_from_container.sh || exit 7
 PG_PASS="${PASS}" ./docker/docker_display_logs.sh || exit 8
 PG_PASS="${PASS}" ./docker/docker_devstats.sh || exit 9
 PG_PASS="${PASS}" ./docker/docker_display_logs.sh || exit 10

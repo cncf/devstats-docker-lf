@@ -1,14 +1,16 @@
 # devstats-docker-lf
+
 DevStats deployment using docker and managed AuroraDB and ElasticSearch
+
 
 # Usage
 
 # Devstats image
 
-- Use `./docker/docker_build.sh` to build `devstats` docker image.
-- Use `./docker/docker_bash.sh` to bash into `devstats` docker container.
-- Use `./docker/docker_publish.sh` to publish `devstats` image to the dockerhub.
-- Use `./docker/docker_remove.sh` to remove `devstats` docker image.
+- Use `./docker/docker_build.sh` to build `devstats-lfda` docker image.
+- Use `./docker/docker_bash.sh` to bash into `devstats-lfda` docker container.
+- Use `./docker/docker_publish.sh` to publish `devstats-lfda` image to the dockerhub.
+- Use `./docker/docker_remove.sh` to remove `devstats-lfda` docker image.
 - Use `./docker/docker_cleanup.sh` to remove all containers and do `docker system prune`.
 - Use `./docker/docker_remove_mapped_data.sh` to remove all data from directories shared between the host and containers.
 
@@ -33,7 +35,6 @@ DevStats deployment using docker and managed AuroraDB and ElasticSearch
 
 - Use `PG_PASS=... ./docker/docker_psql.sh` to start dockerized postgres:11 instance.
 - Use `PG_PASS=... ./docker/docker_psql_bash.sh` to bash into the Postgres container.
-- To deploy from the host use `` GHA2DB_GITHUB_OAUTH="`cat /etc/github/oauths`" PG_PASS=... PG_PASS_RO=... PG_PASS_TEAM=... ./docker/docker_deploy_from_host.sh ``.
 - To deploy from the container use `` GHA2DB_GITHUB_OAUTH="`cat /etc/github/oauths`" PG_PASS=... PG_PASS_RO=... PG_PASS_TEAM=... ./docker/docker_deploy_from_container.sh ``.
 - It will deploy few Linux Foundation Networking projects into the dockerized postgres.
 - It will use `./docker/docker_deploy_all.sh` script which currently uses `SKIPGRAFANA=1` and `NOBACKUP=1`.
@@ -56,21 +57,15 @@ DevStats deployment using docker and managed AuroraDB and ElasticSearch
 
 # DockerHub
 
-- Devstats image can be pulled from the [docker hub](https://hub.docker.com/r/lukaszgryglicki/devstats/).
+- Devstats image can be pulled from the [docker hub](https://hub.docker.com/r/lukaszgryglicki/devstats-lfda/).
 
 
 # One command test all
 
-- Use `PASS=... DEPLOY_FROM=host|container ./docker/docker_test_all.sh` to test full deployment from either the host or the container. It will try to use `/etc/github/oauths` or `/etc/github/oauth` as a GitHub OAuth token (if file is present, otherwise it will use public mode - very restricted).
-- Or specify GitHub OAuth token manually `GHA2DB_GITHUB_OAUTH=... PASS=... DEPLOY_FROM=host|container ./docker/docker_test_all.sh` to test full deployment from either the host or the container.
-- Use `DEPLOY_FROM=host` only on the machine that already has `golang` configured, has all development tools and go static analysis tools, follow `INSTALL_UBUNTU18.md` for details. For a clean OS installs use `DEPLOY_FROM=container`.
-- Final command on a fresh system should be `clear; GHA2DB_GITHUB_OAUTH=key PASS=test DEPLOY_FROM=container ./docker/docker_test_all.sh`.
-- To use aurora postgres database `clear; GHA2DB_GITHUB_OAUTH=key PASS=test DEPLOY_FROM=container AURORA=1 ./docker/docker_test_all.sh`.
-
-
-# Setup
-
-- Use `./docker/docker_setup.sh` to bootsrap environment to run `./docker/docker_test_all.sh`.
+- Use `PASS=... ./docker/docker_test_all.sh` to test full deployment from either the host or the container. It will try to use `/etc/github/oauths` or `/etc/github/oauth` as a GitHub OAuth token (if file is present, otherwise it will use public mode - very restricted).
+- Or specify GitHub OAuth token manually `GHA2DB_GITHUB_OAUTH=... PASS=... ./docker/docker_test_all.sh` to test full deployment from either the host or the container.
+- Final command on a fresh system should be `clear; GHA2DB_GITHUB_OAUTH=key PASS=test ./docker/docker_test_all.sh`.
+- To use aurora postgres database `clear; GHA2DB_GITHUB_OAUTH=key PASS=test AURORA=1 ./docker/docker_test_all.sh`.
 
 
 # Vagrant

@@ -21,20 +21,10 @@ then
 fi
 ./cron/sysctl_config.sh
 ./docker/docker_make_mount_dirs.sh
-if [ "${DEPLOY_FROM}" = "container" ]
+host=`docker run devstats-lfda ip route show | awk '/default/ {print $3}'`
+if [ -z "$AURORA" ]
 then
-  host=`docker run devstats-lfda ip route show | awk '/default/ {print $3}'`
-  if [ -z "$AURORA" ]
-  then
-    docker run --mount src="/data/devstats",target="/root",type=bind -e ONLY="${ONLY}" -e GHA2DB_ES_URL="http://${host}:19200" -e GHA2DB_USE_ES=1 -e GHA2DB_USE_ES_RAW=1 -e GHA2DB_GITHUB_OAUTH="${GHA2DB_GITHUB_OAUTH}" -e GHA2DB_GHAPISKIP="${GHA2DB_GHAPISKIP}" -e GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" -e PG_PORT=65432 -e PG_HOST="${host}" -e PG_PASS="${PG_PASS}" --env-file <(env | grep GHA2DB) devstats-lfda devstats
-  else
-    docker run --mount src="/data/devstats",target="/root",type=bind -e ONLY="${ONLY}" -e GHA2DB_ES_URL="http://${host}:19200" -e GHA2DB_USE_ES=1 -e GHA2DB_USE_ES_RAW=1 -e GHA2DB_GITHUB_OAUTH="${GHA2DB_GITHUB_OAUTH}" -e GHA2DB_GHAPISKIP="${GHA2DB_GHAPISKIP}" -e GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" -e PG_PORT=5432 -e PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" -e PG_PASS="${PG_PASS}" --env-file <(env | grep GHA2DB) devstats-lfda devstats
-  fi
+  docker run --mount src="/data/devstats",target="/root",type=bind -e ONLY="${ONLY}" -e GHA2DB_ES_URL="http://${host}:19200" -e GHA2DB_USE_ES=1 -e GHA2DB_USE_ES_RAW=1 -e GHA2DB_GITHUB_OAUTH="${GHA2DB_GITHUB_OAUTH}" -e GHA2DB_GHAPISKIP="${GHA2DB_GHAPISKIP}" -e GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" -e PG_PORT=65432 -e PG_HOST="${host}" -e PG_PASS="${PG_PASS}" --env-file <(env | grep GHA2DB) devstats-lfda devstats
 else
-  if [ -z "$AURORA" ]
-  then
-    GHA2DB_LOCAL=1 GHA2DB_ES_URL="http://localhost:19200" GHA2DB_USE_ES=1 GHA2DB_USE_ES_RAW=1 GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" PG_PORT=65432 devstats
-  else
-    GHA2DB_LOCAL=1 GHA2DB_ES_URL="http://localhost:19200" GHA2DB_USE_ES=1 GHA2DB_USE_ES_RAW=1 GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" devstats
-  fi
+  docker run --mount src="/data/devstats",target="/root",type=bind -e ONLY="${ONLY}" -e GHA2DB_ES_URL="http://${host}:19200" -e GHA2DB_USE_ES=1 -e GHA2DB_USE_ES_RAW=1 -e GHA2DB_GITHUB_OAUTH="${GHA2DB_GITHUB_OAUTH}" -e GHA2DB_GHAPISKIP="${GHA2DB_GHAPISKIP}" -e GHA2DB_PROJECTS_YAML="docker/docker_projects.yaml" -e PG_PORT=5432 -e PG_HOST="dev-analytics-api-devstats-dev.cluster-czqvov18pw9a.us-west-2.rds.amazonaws.com" -e PG_PASS="${PG_PASS}" --env-file <(env | grep GHA2DB) devstats-lfda devstats
 fi
