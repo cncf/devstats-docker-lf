@@ -73,3 +73,8 @@ DevStats deployment using docker and managed AuroraDB and ElasticSearch
 - Use `./docker/docker_setup.sh` to bootsrap environment to run `./docker/docker_test_all.sh`.
 
 
+# Vagrant
+
+You can use vagrant for deployment, use scripts from `./vagrant` directory.
+
+To test everything use `./deploy.sh` script. Prepend with `VAGRANT=1` or `DOCKER=1`.
