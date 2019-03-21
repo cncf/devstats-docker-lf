@@ -8,7 +8,7 @@ tar cf ../devstats-docker-lf/devstatscode.tar cmd vendor *.go
 
 cd ../devstats || exit 3
 rm -f ../devstats-docker-lf/devstats.tar 2>/dev/null
-tar cf ../devstats-docker-lf/devstats.tar git metrics devel util_sql all lfn shared iovisor mininet opennetworkinglab opensecuritycontroller openswitch p4lang openbmp tungstenfabric cord scripts partials docs cron util_sh/touch projects.yaml companies.yaml skip_dates.yaml linux.yaml zephyr.yaml github_users.json Makefile
+tar cf ../devstats-docker-lf/devstats.tar git metrics devel util_sql all cdf lfn shared iovisor mininet opennetworkinglab opensecuritycontroller openswitch p4lang openbmp tungstenfabric cord scripts partials docs cron util_sh/make_binary_links.sh projects.yaml companies.yaml skip_dates.yaml linux.yaml zephyr.yaml github_users.json Makefile
 
 cd "$cwd" || exit 4
 rm -f devstats-docer-lf.tar 2>/dev/null
