@@ -1,6 +1,7 @@
 FROM golang:1.13 AS builder
 RUN apt-get update -y && apt-get upgrade -y && apt-get --no-install-recommends install -y ca-certificates openssh-client postgresql-client git curl make
 RUN go get -u github.com/rs/cors
+RUN go get -u github.com/json-iterator/go
 RUN go get -u github.com/cncf/devstatscode
 WORKDIR /go/src/github.com/cncf/devstatscode
 ADD devstats.tar .
